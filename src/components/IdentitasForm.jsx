@@ -34,7 +34,6 @@ const IdentitasForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Format data sebelum kirim
     const dataToSend = {
       ...formData,
       beratBadan: parseFloat(formData.beratBadan),
@@ -58,7 +57,7 @@ const IdentitasForm = () => {
           toast.error('NIK sudah terdaftar!', {
             position: 'top-right',
             autoClose: 3000,
-            onClose: () => navigate('/'), // Redirect ke halaman utama
+            onClose: () => navigate('/'),
           });
         } else {
           toast.error('Gagal menyimpan data.', {
@@ -69,14 +68,14 @@ const IdentitasForm = () => {
         return;
       }
 
-      // Berhasil simpan
-      toast.success('Data berhasil disimpan!', {
+      // Ambil ID dari respons backend
+      const pasienId = result.id || result.identitasPasienId;
+
+      toast.success('Data pasien berhasil disimpan!', {
         position: 'top-right',
         autoClose: 3000,
-        onClose: () => navigate('/identitasPasien'), // Redirect setelah sukses
+        onClose: () => navigate(`/riwayatIdentitas/${pasienId}`),
       });
-
-      console.log('Success:', result);
 
     } catch (error) {
       console.error('Network error:', error);
@@ -88,7 +87,6 @@ const IdentitasForm = () => {
   };
 
   return (
-    <>
     <form onSubmit={handleSubmit} className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg">
       <h2 className="text-2xl font-bold mb-6 text-[#410445]">Isi Data Identitas Pasien</h2>
 
@@ -299,12 +297,9 @@ const IdentitasForm = () => {
           Simpan Data
         </button>
       </div>
-    </form>
 
-    // Toast Container
-    <ToastContainer />
-    
-    </>
+      <ToastContainer position="top-right" autoClose={3000} />
+    </form>
   );
 };
 
