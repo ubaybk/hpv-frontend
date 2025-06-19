@@ -7,7 +7,7 @@ import RiwayatKesehatanReproduksiForm from './components/RiwayatKesehatanReprodu
 import RiwayatKankerDalamKeluargaForm from './components/RiwayatKankerDalamKeluargaForm';
 import KeluhanForm from './components/KeluhanForm';
 import CekNik from './pages/CekNik';
-import LihatHasil from './pages/LihatHasil.JSX';
+import LihatHasil from './pages/LihatHasil';
 
 function App() {
   return (
