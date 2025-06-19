@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const RiwayatKesehatanReproduksiForm = () => {
   const { id: identitasPasienId } = useParams();
+  const navigate = useNavigate();
   const { 
     register, 
     handleSubmit, 
@@ -69,7 +72,7 @@ const RiwayatKesehatanReproduksiForm = () => {
   const onSubmit = async (data) => {
     setIsSubmitting(true);
     try {
-      // Transform data before sending
+      // Helper function to convert to number or null
       const transformNumber = (value) => {
         if (value === "" || value === undefined || value === null) return null;
         const num = parseInt(value);
@@ -83,7 +86,7 @@ const RiwayatKesehatanReproduksiForm = () => {
         usiaPertamaKawin: transformNumber(data.usiaPertamaKawin),
         usiaPertamaHamil: transformNumber(data.usiaPertamaHamil),
         konsumsiAlkohol: data.konsumsiAlkohol === 'ya',
-        masihHaid: data.masihHaid,
+        masihHaid: data.masihHaid || 'Ya',
         jumlahMelahirkanNormal: transformNumber(data.jumlahMelahirkanNormal) || 0,
         jumlahMelahirkanCaesar: transformNumber(data.jumlahMelahirkanCaesar) || 0,
         jumlahKeguguran: transformNumber(data.jumlahKeguguran) || 0,
@@ -97,50 +100,59 @@ const RiwayatKesehatanReproduksiForm = () => {
         kurangKonsumsiBuah: data.kurangKonsumsiBuah === 'ya',
       };
 
-      // Conditional fields
-      if (data.masihHaid === 'Tidak') {
+      // Handle conditional fields
+      if (data.masihHaid === 'Ya' && data.tanggalTerakhirHaid) {
+        payload.tanggalTerakhirHaid = new Date(data.tanggalTerakhirHaid).toISOString();
+      } else if (data.masihHaid === 'Tidak') {
         payload.umurMenopause = transformNumber(data.umurMenopause);
-      } else {
-        payload.tanggalTerakhirHaid = data.tanggalTerakhirHaid;
       }
 
       if (data.pernahMenyusui === 'Ya') {
         payload.lamaMenyusuiBulan = transformNumber(data.lamaMenyusuiBulan);
       }
 
-      // KB duration fields
+      // KB lama
       if (data.riwayatKBLama === 'pilKb') {
         payload.durasiPilKBLama = transformNumber(data.durasiPilKBLama);
       } else if (data.riwayatKBLama === 'suntikKb') {
         payload.durasiSuntikKBLama = transformNumber(data.durasiSuntikKBLama);
       }
 
+      // KB baru
       if (data.riwayatKBBaru === 'pilKb') {
         payload.durasiPilKBBaru = transformNumber(data.durasiPilKBBaru);
       } else if (data.riwayatKBBaru === 'suntikKb') {
         payload.durasiSuntikKBBaru = transformNumber(data.durasiSuntikKBBaru);
       }
 
+      // Merokok aktif
       if (data.merokok === 'masih') {
         payload.merokokAktif = transformNumber(data.merokokAktif);
       }
 
-      // Send to API
+      // Kirim ke API
       await axios.post(`http://localhost:3000/api/riwayat-reproduksi`, payload);
+
+      toast.success('Data berhasil disimpan!', {
+        autoClose: 3000,
+        onClose: () => navigate(`/riwayatKankerDalamKeluarga/${identitasPasienId}`)
+      });
       
-      alert('Data berhasil disimpan!');
     } catch (error) {
       let errorMessage = 'Gagal menyimpan data';
       if (error.response) {
-        errorMessage = error.response.data?.error || 
-                     error.response.data?.message || 
-                     `Server error: ${error.response.status}`;
+        errorMessage = error.response.data?.error ||
+                      error.response.data?.message ||
+                      `Server error: ${error.response.status}`;
       } else if (error.request) {
         errorMessage = 'Tidak ada respon dari server';
       } else {
         errorMessage = error.message;
       }
-      alert(errorMessage);
+      
+      toast.error(errorMessage, {
+        autoClose: 5000,
+      });
       console.error("Error details:", error);
     } finally {
       setIsSubmitting(false);
@@ -624,6 +636,9 @@ const RiwayatKesehatanReproduksiForm = () => {
           </button>
         </div>
       </form>
+
+      {/* Toast Container */}
+      <ToastContainer position="top-right" autoClose={5000} />
     </div>
   );
 };

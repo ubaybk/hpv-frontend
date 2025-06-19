@@ -6,6 +6,8 @@ import RiwayatIdentitasForm from './components/RiwayatIdentitasForm';
 import RiwayatKesehatanReproduksiForm from './components/RiwayatKesehatanReproduksiForm';
 import RiwayatKankerDalamKeluargaForm from './components/RiwayatKankerDalamKeluargaForm';
 import KeluhanForm from './components/KeluhanForm';
+import CekNik from './pages/CekNik';
+import LihatHasil from './pages/LihatHasil.JSX';
 
 function App() {
   return (
@@ -16,6 +18,8 @@ function App() {
       <Route path="/riwayatReproduksi/:id" element={<RiwayatKesehatanReproduksiForm/>}/>
       <Route path="/riwayatKankerDalamKeluarga/:id" element={<RiwayatKankerDalamKeluargaForm/>}/>
       <Route path="/keluhanForm/:id" element={<KeluhanForm/>}/>
+      <Route path="/cekNik" element={<CekNik/>}/>
+      <Route path="/lihatHasil/:id" element={<LihatHasil/>}/>
     </Routes>
   );
 }

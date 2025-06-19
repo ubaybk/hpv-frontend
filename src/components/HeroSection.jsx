@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const HeroSection = () => {
   return (
@@ -52,9 +53,9 @@ const HeroSection = () => {
             >
               Mulai Sekarang
             </a>
-            <button className="w-full sm:w-auto border-2 border-pink-300 text-pink-300 hover:bg-pink-300 hover:text-purple-900 font-semibold py-4 px-8 rounded-xl transition-all duration-300">
+            <Link to="/cekNik" className="w-full sm:w-auto border-2 border-pink-300 text-pink-300 hover:bg-pink-300 hover:text-purple-900 font-semibold py-4 px-8 rounded-xl transition-all duration-300">
               Cek NIK
-            </button>
+            </Link>
           </div>
 
           {/* Features Preview */}
