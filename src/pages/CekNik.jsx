@@ -1,11 +1,15 @@
 import { useState } from 'react';
 import { Search, User, Calendar, MapPin, Phone, Mail, Loader2, AlertCircle } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const CekNik = () => {
     const [nik, setNik] = useState('');
     const [userData, setUserData] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const navigate = useNavigate();
+
+    
 
     const handleSearch = async () => {
         if (!nik || nik.length !== 16) {

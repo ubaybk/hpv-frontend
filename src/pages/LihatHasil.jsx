@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { 
-    ArrowLeft,AlertCircle, User, Calendar, MapPin, Phone, Mail, Heart, 
+    ArrowLeft, AlertCircle, User, Calendar, MapPin, Phone, Mail, Heart, 
     FileText, Activity, Users, Loader2, 
-    CheckCircle, XCircle, Baby, Scale, Ruler 
+    CheckCircle, XCircle, Baby, Scale, Ruler, TestTube 
 } from 'lucide-react';
 
 const LihatHasil = () => {
@@ -557,63 +557,183 @@ const renderComplaintsTab = () => {
 };
 
     const renderResultsTab = () => {
-    const hasLabResults = patientData?.hasilPemeriksaanLab && patientData.hasilPemeriksaanLab.length > 0;
-    const hasKeluhan = patientData?.keluhan && patientData.keluhan.length > 0;
+    // const hasLabResults = patientData?.hasilPemeriksaanLab && patientData.hasilPemeriksaanLab.length > 0;
+    // const hasKeluhan = patientData?.keluhan && patientData.keluhan.length > 0;
+
+     const hasLabResults = patientData?.hasilPemeriksaanLab && patientData.hasilPemeriksaanLab.length > 0;
+        const hasKeluhan = patientData?.keluhan && patientData.keluhan.length > 0;
 
     return (
-        <div className="space-y-6">
-            <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-                <Activity className="text-[#F6DC43]" size={28} />
-                Hasil Pemeriksaan & Keluhan
-            </h3>
+      
+            <div className="space-y-6">
+                <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                    <Activity className="text-[#F6DC43]" size={28} />
+                    Hasil Pemeriksaan & Keluhan
+                </h3>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                {/* Keluhan */}
-                <div className="bg-white/5 rounded-2xl p-6">
-                    <h4 className="text-xl font-semibold text-white mb-4">Keluhan</h4>
-                    {hasKeluhan ? (
-                        <div className="space-y-4">
-                            {patientData.keluhan.map((keluhan, index) => (
-                                <div key={index} className="p-4 bg-white/5 rounded-xl border border-white/10">
-                                    <p className="text-white/80">{keluhan.deskripsi || 'Tidak ada deskripsi'}</p>
-                                    <p className="text-white/60 text-sm mt-2">
-                                        {formatDate(keluhan.createdAt)}
-                                    </p>
-                                </div>
-                            ))}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    {/* Keluhan */}
+                    <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-white/10">
+                    <div className="flex items-center gap-3 mb-6">
+                            <div className="p-2 bg-gradient-to-br from-[#FF2DF1] to-[#A5158C] rounded-lg">
+                                <TestTube className="w-6 h-6 text-white" />
+                            </div>
+                            <h4 className="text-xl font-bold text-white">Hasil Pemeriksaan IVA & Payudara</h4>
                         </div>
-                    ) : (
-                        <div className="text-center py-8">
-                            <FileText className="text-white/40 mx-auto mb-3" size={48} />
-                            <p className="text-white/60">Tidak ada keluhan tercatat</p>
-                        </div>
-                    )}
-                </div>
+                        {/* {hasKeluhan ? (
+                            <div className="space-y-4">
+                                {patientData.keluhan.map((keluhan, index) => (
+                                    <div key={index} className="p-4 bg-white/5 rounded-xl border border-white/10 shadow-md hover:shadow-lg transition-shadow duration-300">
+                                        <p className="text-white/80">{keluhan.deskripsi || 'Tidak ada deskripsi'}</p>
+                                        <p className="text-white/60 text-sm mt-2">
+                                            {formatDate(keluhan.createdAt)}
+                                        </p>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="text-center py-8">
+                                <FileText className="text-white/40 mx-auto mb-3" size={48} />
+                                <p className="text-white/60">Tidak ada keluhan tercatat</p>
+                            </div>
+                        )} */}
+                        {hasLabResults ? (
+                            <div className="space-y-6 max-h-[500px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent">
+                                {patientData.hasilPemeriksaanLab.map((result, index) => (
+                                    <div
+                                        key={index}
+                                        className="p-5 bg-white/5 rounded-xl border border-white/10 shadow-md hover:shadow-lg transition-shadow duration-300"
+                                    >
+                                        <div className="flex justify-between items-start">
+                                            <h5 className="text-white font-semibold text-lg">
+                                                {result.jenisPemeriksaan || 'Jenis Tes Tidak Diketahui'}
+                                            </h5>
+                                            <span className="text-xs text-white/60">
+                                                {result.createdAt ? formatDate(result.createdAt) : 'Tanggal Tidak Tersedia'}
+                                            </span>
+                                        </div>
 
-                {/* Hasil Lab */}
-                <div className="bg-white/5 rounded-2xl p-6">
-                    <h4 className="text-xl font-semibold text-white mb-4">Hasil Pemeriksaan Lab</h4>
-                    {hasLabResults ? (
-                        <div className="space-y-4">
-                            {patientData.hasilPemeriksaanLab.map((result, index) => (
-                                <div key={index} className="p-4 bg-white/5 rounded-xl border border-white/10">
-                                    <h5 className="text-white font-semibold">{result.namaTest || 'Test'}</h5>
-                                    <p className="text-white/80">{result.hasil || 'Tidak ada hasil'}</p>
-                                    <p className="text-white/60 text-sm mt-2">
-                                        {formatDate(result.tanggalTest)}
-                                    </p>
+                                        <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
+                                            <p className="text-white/90 flex items-center gap-2">
+                                                <span className="w-2 h-2 rounded-full bg-[#FF2DF1]"></span> Sub Type 16:
+                                                <span className="font-medium ml-1">{result.subType16 ?? 'Tidak ada hasil'}</span>
+                                            </p>
+                                            <p className="text-white/90 flex items-center gap-2">
+                                                <span className="w-2 h-2 rounded-full bg-[#F6DC43]"></span> Sub Type 18:
+                                                <span className="font-medium ml-1">{result.subType18 ?? 'Tidak ada hasil'}</span>
+                                            </p>
+                                            <p className="text-white/90 flex items-center gap-2">
+                                                <span className="w-2 h-2 rounded-full bg-[#A5158C]"></span> Sub Type 52:
+                                                <span className="font-medium ml-1">{result.subType52 ?? 'Tidak ada hasil'}</span>
+                                            </p>
+                                            <p className="text-white/90 flex items-center gap-2">
+                                                <span className="w-2 h-2 rounded-full bg-[#410445]"></span> Sub Type Lainnya:
+                                                <span className="font-medium ml-1">{result.subTypeLainnya ?? 'Tidak ada hasil'}</span>
+                                            </p>
+                                            
+                                            <p className="text-white/70 mt-2">Metode: 
+                                                <span className="font-medium"> {result.metodePemeriksaan || 'Tidak tersedia'}</span>
+                                            </p>
+                                            <p className="text-white/70 mt-2">Nilai Normal: 
+                                                <span className="font-medium"> {result.nilaiNormal || 'Tidak tersedia'}</span>
+                                            </p>
+                                            <p className="text-white/70 mt-2">IVA Test: 
+                                                <span className={`font-medium ${result.ivaTest === 'Positif' ? 'text-red-400' : 'text-green-400'}`}>
+                                                    {result.ivaTest || 'Tidak tersedia'}
+                                                </span>
+                                            </p>
+                                            <p className="text-white/70 mt-2">Sadanis: 
+                                                <span className="font-medium"> {result.sadanis || 'Tidak tersedia'}</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="text-center py-12 bg-white/5 rounded-xl border border-white/10 mt-4">
+                                <div className="flex justify-center mb-4">
+                                    <Activity className="text-white/40 mx-auto" size={60} />
                                 </div>
-                            ))}
+                                <p className="text-white/70 text-lg">Belum ada hasil pemeriksaan lab</p>
+                                <p className="text-white/50 text-sm mt-2">Silakan perbarui data jika sudah tersedia.</p>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Hasil Lab */}
+                    <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-white/10">
+                        <div className="flex items-center gap-3 mb-6">
+                            <div className="p-2 bg-gradient-to-br from-[#FF2DF1] to-[#A5158C] rounded-lg">
+                                <TestTube className="w-6 h-6 text-white" />
+                            </div>
+                            <h4 className="text-xl font-bold text-white">Hasil Pemeriksaan Laboratorium</h4>
                         </div>
-                    ) : (
-                        <div className="text-center py-8">
-                            <Activity className="text-white/40 mx-auto mb-3" size={48} />
-                            <p className="text-white/60">Belum ada hasil pemeriksaan lab</p>
-                        </div>
-                    )}
+
+                        {hasLabResults ? (
+                            <div className="space-y-6 max-h-[500px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent">
+                                {patientData.hasilPemeriksaanLab.map((result, index) => (
+                                    <div
+                                        key={index}
+                                        className="p-5 bg-white/5 rounded-xl border border-white/10 shadow-md hover:shadow-lg transition-shadow duration-300"
+                                    >
+                                        <div className="flex justify-between items-start">
+                                            <h5 className="text-white font-semibold text-lg">
+                                                {result.jenisPemeriksaan || 'Jenis Tes Tidak Diketahui'}
+                                            </h5>
+                                            <span className="text-xs text-white/60">
+                                                {result.createdAt ? formatDate(result.createdAt) : 'Tanggal Tidak Tersedia'}
+                                            </span>
+                                        </div>
+
+                                        <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
+                                            <p className="text-white/90 flex items-center gap-2">
+                                                <span className="w-2 h-2 rounded-full bg-[#FF2DF1]"></span> Sub Type 16:
+                                                <span className="font-medium ml-1">{result.subType16 ?? 'Tidak ada hasil'}</span>
+                                            </p>
+                                            <p className="text-white/90 flex items-center gap-2">
+                                                <span className="w-2 h-2 rounded-full bg-[#F6DC43]"></span> Sub Type 18:
+                                                <span className="font-medium ml-1">{result.subType18 ?? 'Tidak ada hasil'}</span>
+                                            </p>
+                                            <p className="text-white/90 flex items-center gap-2">
+                                                <span className="w-2 h-2 rounded-full bg-[#A5158C]"></span> Sub Type 52:
+                                                <span className="font-medium ml-1">{result.subType52 ?? 'Tidak ada hasil'}</span>
+                                            </p>
+                                            <p className="text-white/90 flex items-center gap-2">
+                                                <span className="w-2 h-2 rounded-full bg-[#410445]"></span> Sub Type Lainnya:
+                                                <span className="font-medium ml-1">{result.subTypeLainnya ?? 'Tidak ada hasil'}</span>
+                                            </p>
+                                            
+                                            <p className="text-white/70 mt-2">Metode: 
+                                                <span className="font-medium"> {result.metodePemeriksaan || 'Tidak tersedia'}</span>
+                                            </p>
+                                            <p className="text-white/70 mt-2">Nilai Normal: 
+                                                <span className="font-medium"> {result.nilaiNormal || 'Tidak tersedia'}</span>
+                                            </p>
+                                            <p className="text-white/70 mt-2">IVA Test: 
+                                                <span className={`font-medium ${result.ivaTest === 'Positif' ? 'text-red-400' : 'text-green-400'}`}>
+                                                    {result.ivaTest || 'Tidak tersedia'}
+                                                </span>
+                                            </p>
+                                            <p className="text-white/70 mt-2">Sadanis: 
+                                                <span className="font-medium"> {result.sadanis || 'Tidak tersedia'}</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="text-center py-12 bg-white/5 rounded-xl border border-white/10 mt-4">
+                                <div className="flex justify-center mb-4">
+                                    <Activity className="text-white/40 mx-auto" size={60} />
+                                </div>
+                                <p className="text-white/70 text-lg">Belum ada hasil pemeriksaan lab</p>
+                                <p className="text-white/50 text-sm mt-2">Silakan perbarui data jika sudah tersedia.</p>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
-        </div>
+        
     );
 };
 

@@ -8,6 +8,11 @@ import RiwayatKankerDalamKeluargaForm from './components/RiwayatKankerDalamKelua
 import KeluhanForm from './components/KeluhanForm';
 import CekNik from './pages/CekNik';
 import LihatHasil from './pages/LihatHasil';
+import AuthPages from './pages/admin/AuthPages';
+import Dashboard from './pages/admin/Dashboard';
+import ListPasien from './pages/admin/ListPasien';
+import Periksa from './pages/admin/Periksa';
+import PeriksaPasien from './pages/admin/PeriksaPasien';
 
 function App() {
   return (
@@ -20,6 +25,10 @@ function App() {
       <Route path="/keluhanForm/:id" element={<KeluhanForm/>}/>
       <Route path="/cekNik" element={<CekNik/>}/>
       <Route path="/lihatHasil/:id" element={<LihatHasil/>}/>
+      <Route path='/authPages' element={<AuthPages/>}/>
+      <Route path='/dashboard' element={<Dashboard/>}/>
+      <Route path='/listPasien' element={<ListPasien/>}/>
+      <Route path='/periksaPasien/:id' element={<PeriksaPasien/>}/>
     </Routes>
   );
 }
